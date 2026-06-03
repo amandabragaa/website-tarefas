@@ -1,35 +1,37 @@
 import { GetServerSideProps } from "next";
-import style from "./style.module.css";
+import style from "./styles.module.css";
 import Head from "next/head";
 
 import { getSession } from "next-auth/react";
+import { Textarea } from "../../components/textarea";
 
 export default function Dashboard() {
   return (
-    <>
-      <div className={style.container}>
-        <Head>
-          <title>Meu painel de tarefas</title>
-        </Head>
+    <div className={style.container}>
+      <Head>
+        <title>Meu painel de tarefas</title>
+      </Head>
 
-        <h1 className={style.title}>Qual sua tarefa?</h1>
-        <input className={style.input} placeholder="Digite sua tarefa..." />
-        <div>
-          <button className={style.button}></button>
-          <label className={style.label}>Deixar tarefa pública</label>
-        </div>
-        <button className={style.button}>Registrar</button>
-      </div>
+      <main className={style.main}>
+        <section className={style.content}>
+          <div className={style.contentForm}>
+            <h1 className={style.title}>Qual sua tarefa?</h1>
 
-      <div className={style.containerTarefas}>
-        <h1 className={style.titleTarefas}>Minhas Tarefas</h1>
-        <div className={style.task}>
-          <input className={style.taskTitle} />
-          <input className={style.taskTitle} />
-          <input className={style.taskTitle} />
-        </div>
-      </div>
-    </>
+            <form>
+              <Textarea placeholder="Digite qual sua tarefa..." />
+              <div className={style.checkboxArea}>
+                <input type="checkbox" className={style.checkbox} />
+                <label>Deixar tarefa publica?</label>
+              </div>
+
+              <button type="submit" className={style.button}>
+                Registrar
+              </button>
+            </form>
+          </div>
+        </section>
+      </main>
+    </div>
   );
 }
 
