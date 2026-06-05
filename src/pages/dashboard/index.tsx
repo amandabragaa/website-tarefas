@@ -1,4 +1,5 @@
 import { GetServerSideProps } from "next";
+import { useState } from "react";
 import style from "./styles.module.css";
 import Head from "next/head";
 
@@ -8,6 +9,20 @@ import { FiShare2 } from "react-icons/fi";
 import { FaTrash } from "react-icons/fa";
 
 export default function Dashboard() {
+  const [input, setInput] = useState("");
+  const [publicTask, setPublicTask] = useState(false);
+
+  function handleRegisterTak(e: React.SubmitEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    if (input === "") {
+      alert("Digite sua tarefa...");
+      return;
+    }
+
+    console.log("Registrando tarefa...");
+  }
+
   return (
     <div className={style.container}>
       <Head>
@@ -19,10 +34,19 @@ export default function Dashboard() {
           <div className={style.contentForm}>
             <h1 className={style.title}>Qual sua tarefa?</h1>
 
-            <form>
-              <Textarea placeholder="Digite qual sua tarefa..." />
+            <form onSubmit={handleRegisterTak}>
+              <Textarea
+                placeholder="Digite qual sua tarefa..."
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+              />
               <div className={style.checkboxArea}>
-                <input type="checkbox" className={style.checkbox} />
+                <input
+                  type="checkbox"
+                  className={style.checkbox}
+                  checked={publicTask}
+                  onChange={(e) => setPublicTask(e.target.checked)}
+                />
                 <label>Deixar tarefa publica?</label>
               </div>
 
