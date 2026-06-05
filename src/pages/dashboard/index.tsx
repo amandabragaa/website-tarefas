@@ -4,6 +4,8 @@ import Head from "next/head";
 
 import { getSession } from "next-auth/react";
 import { Textarea } from "../../components/textarea";
+import { FiShare2 } from "react-icons/fi";
+import { FaTrash } from "react-icons/fa";
 
 export default function Dashboard() {
   return (
@@ -29,6 +31,26 @@ export default function Dashboard() {
               </button>
             </form>
           </div>
+        </section>
+
+        <section className={style.taskContainer}>
+          <h1> Minhas tarefas </h1>
+
+          <article className={style.task}>
+            <div className={style.tagContainer}>
+              <label className={style.tag}>PUBLICA</label>
+              <button className={style.shareButton}>
+                <FiShare2 size={22} color="#3183ff" />
+              </button>
+            </div>
+
+            <div className={style.taskContent}>
+              <p>Minha primeira tarefa de exemplo</p>
+              <button className={style.trashButton}>
+                <FaTrash size={24} color="#ea3140" />
+              </button>
+            </div>
+          </article>
         </section>
       </main>
     </div>
