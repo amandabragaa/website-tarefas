@@ -1,9 +1,18 @@
+import { ChangeEvent, useState } from "react";
+import { useSession } from "next-auth/react";
 import Head from "next/head";
 import styles from "./style.module.css";
 import { GetServerSideProps } from "next";
 
 import { db } from "../../services/firebaseConection";
-import { doc, collection, query, where, getDoc } from "firebase/firestore";
+import {
+  doc,
+  collection,
+  query,
+  where,
+  getDoc,
+  addDoc,
+} from "firebase/firestore";
 import { Textarea } from "@/components/textarea";
 
 interface TaskProps {
@@ -17,6 +26,32 @@ interface TaskProps {
 }
 
 export default function Task({ item }: TaskProps) {
+  const { data: session } = useSession();
+
+  const [input, setInput] = useState("");
+
+  async function handleComments(e: React.SubmitEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    if (input === "") return;
+
+    if (!session?.user?.email || !session?.user?.name) return;
+
+    try {
+      const docRef = await addDoc(collection(db, "coments"), {
+        comment: input,
+        created: new Date(),
+        user: session?.user.email,
+        name: session?.user?.name,
+        taskIs: item?.taskId,
+      });
+
+      setInput("");
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -33,9 +68,16 @@ export default function Task({ item }: TaskProps) {
       <section className={styles.commentsContainer}>
         <h2>Deixar comentários</h2>
 
-        <form>
-          <Textarea placeholder="Digite seu comentário..." />
-          <button className={styles.button}>Enviar comentário</button>
+        <form onSubmit={handleComments}>
+          <Textarea
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Digite seu comentário..."
+          />
+
+          <button disabled={!session?.user} className={styles.button}>
+            Enviar comentário
+          </button>
         </form>
       </section>
     </div>
