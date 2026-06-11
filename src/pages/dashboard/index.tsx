@@ -135,6 +135,7 @@ export default function Dashboard({ user }: HomeProps) {
 
         <section className={style.taskContainer}>
           <h1> Minhas tarefas </h1>
+          {tasks.length === 0 && <span>Nenhuma tarefa foi adicionada...</span>}
 
           {tasks.map((item) => (
             <article key={item.id} className={style.task}>
